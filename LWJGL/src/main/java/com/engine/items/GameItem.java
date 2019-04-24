@@ -122,5 +122,6 @@ public class GameItem {
 
   public void setDisableFrustumCulling(boolean disableFrustumCulling) {
       this.disableFrustumCulling = disableFrustumCulling;
-  }    
+  }
+  
 }

@@ -17,7 +17,7 @@ public class Main {
          opts.compatibleProfile = true;
          opts.antialiasing = true;
          opts.frustumCulling = true;
-         GameEngine gameEng = new GameEngine("GAME", vSync, opts, gameLogic);
+         GameEngine gameEng = new GameEngine("RotMGJ", vSync, opts, gameLogic);
          gameEng.start();
      } catch (Exception excp) {
          excp.printStackTrace();
