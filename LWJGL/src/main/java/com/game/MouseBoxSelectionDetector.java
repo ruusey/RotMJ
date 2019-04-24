@@ -51,4 +51,30 @@ public class MouseBoxSelectionDetector extends CameraBoxSelectionDetector {
 
         return selectGameItem(gameItems, camera.getPosition(), mouseDir);
     }
+    public GameItem selectMovementTile(GameItem[] gameItems, Window window, Vector2d mousePos, Camera camera) {
+        // Transform mouse coordinates into normalized spaze [-1, 1]
+        int wdwWitdh = window.getWidth();
+        int wdwHeight = window.getHeight();
+        
+        float x = (float)(2 * mousePos.x) / (float)wdwWitdh - 1.0f;
+        float y = 1.0f - (float)(2 * mousePos.y) / (float)wdwHeight;
+        float z = -1.0f;
+
+        invProjectionMatrix.set(window.getProjectionMatrix());
+        invProjectionMatrix.invert();
+        
+        tmpVec.set(x, y, z, 1.0f);
+        tmpVec.mul(invProjectionMatrix);
+        tmpVec.z = -1.0f;
+        tmpVec.w = 0.0f;
+        
+        Matrix4f viewMatrix = camera.getViewMatrix();
+        invViewMatrix.set(viewMatrix);
+        invViewMatrix.invert();
+        tmpVec.mul(invViewMatrix);
+        
+        mouseDir.set(tmpVec.x, tmpVec.y, tmpVec.z);
+
+        return selectGameItemMove(gameItems, camera.getPosition(), mouseDir);
+    }
 }

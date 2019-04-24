@@ -9,6 +9,7 @@ import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import java.nio.file.Paths;
 
+import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 import org.joml.Vector2f;
 import org.joml.Vector3d;
@@ -164,8 +165,9 @@ public class DummyGame implements IGameLogic {
         Mesh[] playerMesh = StaticMeshesLoader.load("src/main/resources/models/game/Wizard.obj", "src/main/resources/models/game");
         
         player = new Player(playerMesh);
-        player.setScale(0.1f);
+        player.setScale(0.2f);
         player.setPosition(0, 0, 10);
+        player.setSelected(true);
         
         animItem = AnimMeshesLoader.loadAnimGameItem("src/main/resources/models/bob/boblamp.md5mesh", "");
         animItem.setScale(0.05f);
@@ -174,6 +176,7 @@ public class DummyGame implements IGameLogic {
         //scene.setGameItems(new GameItem[]{player, terrain});
         gameItems[gameItems.length-1]=player;
         scene.setGameItems(gameItems);
+        
         // Shadows
         scene.setRenderShadows(true);
         
@@ -269,7 +272,7 @@ public class DummyGame implements IGameLogic {
             sceneChanged = true;
             animation.nextFrame();
         }
-        itemSelector.selectGameItem(new GameItem[] {player}, camera);
+        
         
     }
 
@@ -312,6 +315,23 @@ public class DummyGame implements IGameLogic {
         boolean aux = mouseInput.isLeftButtonPressed();
         if (aux && !this.leftButtonPressed && this.selectDetector.selectGameItem(gameItems, window, mouseInput.getCurrentPos(), camera)) {
             this.hud.incCounter();
+            GameItem go = this.selectDetector.selectMovementTile(gameItems, window, mouseInput.getCurrentPos(), camera);
+            Thread t = new Thread(() -> {
+            	float interp = 0.0f;
+               while(true) {
+            	   float angle = player.getPosition().angle(go.getPosition());
+            	   player.getRotation().y=angle*2;
+            	   
+            	   player.getPosition().lerp(go.getPosition(),1.0f);
+               	   player.getPosition().y=-0.5f;
+               	  
+               	   if(player.getPosition().distance(go.getPosition())<=1.0f)
+               		   break;
+               }
+            });
+            t.run();
+            
+            
         }
         this.leftButtonPressed = aux;
     }

@@ -50,4 +50,28 @@ public class CameraBoxSelectionDetector {
         }
         return selected;
     }
+    protected GameItem selectGameItemMove(GameItem[] gameItems, Vector3f center, Vector3f dir) {
+        boolean selected = false;
+        GameItem selectedGameItem = null;
+        float closestDistance = Float.POSITIVE_INFINITY;
+
+        for (GameItem gameItem : gameItems) {
+            gameItem.setSelected(false);
+            min.set(gameItem.getPosition());
+            max.set(gameItem.getPosition());
+            min.add(-gameItem.getScale(), -gameItem.getScale(), -gameItem.getScale());
+            max.add(gameItem.getScale(), gameItem.getScale(), gameItem.getScale());
+            if (Intersectionf.intersectRayAab(center, dir, min, max, nearFar) && nearFar.x < closestDistance) {
+                closestDistance = nearFar.x;
+                selectedGameItem = gameItem;
+            }
+        }
+
+        if (selectedGameItem != null) {
+            selectedGameItem.setSelected(true);
+            selected = true;
+        }
+       
+        return selectedGameItem;
+    }
 }
