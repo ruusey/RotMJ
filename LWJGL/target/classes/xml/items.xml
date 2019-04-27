@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Objects>
+	<Object type="1" id="Coral Bow">
+		<Class>Equipment</Class>
+		<Item />
+		<Texture>
+			<File>97.png</File>
+			<X>4</X>
+			<Y>0</Y>
+		</Texture>
+
+		<RateOfFire>1.5</RateOfFire>
+		<Projectile>
+			<ObjectId>Coral Arrow</ObjectId>
+			<Speed>8</Speed>
+			<MinDamage>60</MinDamage>
+			<MaxDamage>80</MaxDamage>
+			<Range>350</Range>
+			<AngleBetweenShots>0.1</AngleBetweenShots>
+			<MultiHit />
+		</Projectile>
+		<NumProjectiles>2</NumProjectiles>
+	</Object>
+
+	<Object type="2" id="Coral Arrow">
+		<Class>Projectile</Class>
+		<Texture>
+			<File>86.png</File>
+			<X>7</X>
+			<Y>3</Y>
+		</Texture>
+		<AngleCorrection>1</AngleCorrection>
+		<Size>10</Size>
+	</Object>
+	<Object type="8" id="EnemyAttack1">
+		<Class>Projectile</Class>
+		<Texture>
+			<File>86.png</File>
+			<X>3</X>
+			<Y>4</Y>
+		</Texture>
+		<AngleCorrection>1</AngleCorrection>
+		<Size>10</Size>
+	</Object>
+	<Object type="9" id="EnemyAttack2">
+		<Class>Projectile</Class>
+		<Texture>
+			<File>86.png</File>
+			<X>15</X>
+			<Y>6</Y>
+		</Texture>
+		<AngleCorrection>1</AngleCorrection>
+		<Size>10</Size>
+	</Object>
+	<Object type="3" id="Archer">
+		<Class>Player</Class>
+		<Texture>
+			<File>93.png</File>
+			<X>0</X>
+			<Y>3</Y>
+		</Texture>
+
+		<Player />
+		<BloodProb>1.0</BloodProb>
+		<SlotTypes>3,15,6,9,0,0,0,0,0,0,0,0</SlotTypes>
+		<Equipment>12,2,-1,-1,12,-1,-1,-1,-1,-1,-1,-1</Equipment>
+		<Hp max="700">130</Hp>
+		<Attack max="75">100</Attack>
+		<Defense max="25">10</Defense>
+		<Speed max="50">50</Speed>
+		<Dexterity max="50">5</Dexterity>
+		<Vitality max="40">50</Vitality>
+
+	</Object>
+	<Object type="4" id="Loot Bag">
+		<Class>Container</Class>
+		<Container />
+		<CanPutNormalObjects />
+		<Loot />
+		<Texture>
+			<File>97.png</File>
+			<X>4</X>
+			<Y>0</Y>
+		</Texture>
+	</Object>
+	<Object type="5" id="Wall1">
+		<Class>GameObject</Class>
+		<Texture>
+			<File>97.png</File>
+			<X>9</X>
+			<Y>9</Y>
+		</Texture>
+		<DrawOnGround />
+		<Static />
+	</Object>
+	<Object type="6" id="Wall2">
+		<Class>GameObject</Class>
+		<Texture>
+			<File>101.png</File>
+			<X>12</X>
+			<Y>0</Y>
+		</Texture>
+		<DrawOnGround />
+		<Static />
+	</Object>
+	<Object type="7" id="Enemy1">
+		<Class>Enemy</Class>
+		<Texture>
+			<File>120.png</File>
+			<X>0</X>
+			<Y>1</Y>
+		</Texture>
+		<MaxHitPoints>20000</MaxHitPoints>
+		<Size>100</Size>
+		<Defense>200</Defense>
+		<Projectile id="0">
+			<ObjectId>EnemyAttack1</ObjectId>
+			<Speed>5</Speed>
+			<Size>30</Size>
+			<Damage>10</Damage>
+			<Range>500</Range>
+			<AngleBetweenShots>0.15</AngleBetweenShots>
+			<ShotDelay>500</ShotDelay>
+			<TargetPlayer>true</TargetPlayer>
+			<ShotsPerFrame>3</ShotsPerFrame>
+		</Projectile>
+		<Projectile id="1">
+			<ObjectId>EnemyAttack2</ObjectId>
+			<Speed>5</Speed>
+			<Size>30</Size>
+			<Damage>5</Damage>
+			<Range>400</Range>
+			<AngleBetweenShots>0.8</AngleBetweenShots>
+			<ShotDelay>500</ShotDelay>
+			<TargetPlayer>false</TargetPlayer>
+			<ShotsPerFrame>8</ShotsPerFrame>
+		</Projectile>
+	</Object>
+</Objects>

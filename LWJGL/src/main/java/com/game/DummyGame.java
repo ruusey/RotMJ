@@ -111,7 +111,7 @@ public class DummyGame implements IGameLogic {
 
         float posx = startx;
         float posz = startz;
-        float incy = 0.0f;
+        float incy = 2.0f;
 
         selectDetector = new MouseBoxSelectionDetector();
         itemSelector = new CameraBoxSelectionDetector();
@@ -148,7 +148,7 @@ public class DummyGame implements IGameLogic {
                 gameItem.setScale(blockScale);
                 int rgb = HeightMapMesh.getRGB(i, j, width, buf);
                 incy = rgb / (10 * 255 * 255);
-                gameItem.setPosition(posx, starty , posz);
+                gameItem.setPosition(posx, starty+incy , posz);
                 int textPos = Math.random() > 0.5f ? 0 : 1;
                 gameItem.setTextPos(textPos);
                 gameItems[i * width + j] = gameItem;
@@ -167,15 +167,15 @@ public class DummyGame implements IGameLogic {
         player = new Player(playerMesh);
         player.setScale(0.2f);
         player.setPosition(0, 0, 10);
-        player.setSelected(true);
+        //player.setSelected(true);
         
         animItem = AnimMeshesLoader.loadAnimGameItem("src/main/resources/models/bob/boblamp.md5mesh", "");
         animItem.setScale(0.05f);
         animation = animItem.getCurrentAnimation();
-        
+     
         //scene.setGameItems(new GameItem[]{player, terrain});
         gameItems[gameItems.length-1]=player;
-        scene.setGameItems(gameItems);
+       scene.setGameItems(gameItems);
         
         // Shadows
         scene.setRenderShadows(true);
