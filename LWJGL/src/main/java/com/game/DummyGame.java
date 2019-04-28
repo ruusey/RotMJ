@@ -11,6 +11,7 @@ import java.nio.file.Paths;
 
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
+import org.joml.Random;
 import org.joml.Vector2f;
 import org.joml.Vector3d;
 import org.joml.Vector3f;
@@ -39,6 +40,7 @@ import com.engine.graph.weather.Fog;
 import com.engine.graph.world.Player;
 import com.engine.items.GameItem;
 import com.engine.items.SkyBox;
+import com.engine.items.Terrain;
 import com.engine.loaders.assimp.AnimMeshesLoader;
 import com.engine.loaders.assimp.StaticMeshesLoader;
 import com.util.OBJLoader;
@@ -50,12 +52,12 @@ public class DummyGame implements IGameLogic {
 
     private final Vector3f cameraInc;
     
-    private final Quaternionf playerInc;
+    private final Vector3f playerInc;
 
     private final Renderer renderer;
 
-    private final Camera camera;
-
+    private  Camera camera;
+   
     private Scene scene;
 
     private static final float CAMERA_POS_STEP = 0.2f;
@@ -71,7 +73,7 @@ public class DummyGame implements IGameLogic {
     private Animation animation;
 
     private AnimGameItem animItem;
-    
+    private MouseInput input;
     private Player player;
     private Hud hud;
     private MouseBoxSelectionDetector selectDetector;
@@ -81,8 +83,9 @@ public class DummyGame implements IGameLogic {
     public DummyGame() {
     	hud = new Hud();
         renderer = new Renderer();
-        camera = new Camera();
-        playerInc = new Quaternionf(0.0f, 0.0f, 0.0f,0f);
+        input = new MouseInput();
+        itemSelector = new CameraBoxSelectionDetector();
+        playerInc = new Vector3f(0.0f, 0.0f, 0.0f);
         cameraInc = new Vector3f(0.0f, 0.0f, 0.0f);
         angleInc = 0;
         lightAngle = 90;
@@ -91,30 +94,32 @@ public class DummyGame implements IGameLogic {
 
     @Override
     public void init(Window window) throws Exception {
+    	hud.init(window);
+    	input.init(window);
         renderer.init(window);
-        hud.init(window);
+        
         scene = new Scene();
+        
+
+       
         leftButtonPressed = false;
 
-        scene = new Scene();
+      
 
         float reflectance = 1f;
 
-        float blockScale = 0.5f;
+        float blockScale = 1f;
         float skyBoxScale = 100.0f;
         float extension = 2.0f;
 
         float startx = extension * (-skyBoxScale + blockScale);
         float startz = extension * (skyBoxScale - blockScale);
-        float starty = -1.0f;
+        float starty = 0.0f;
         float inc = blockScale * 2;
 
         float posx = startx;
         float posz = startz;
-        float incy = 2.0f;
-
-        selectDetector = new MouseBoxSelectionDetector();
-        itemSelector = new CameraBoxSelectionDetector();
+        float incy = 1.0f;
         ByteBuffer buf;
         int width;
         int height;
@@ -138,18 +143,20 @@ public class DummyGame implements IGameLogic {
         int instances = height * width;
         Mesh mesh = OBJLoader.loadMesh("/models/cube.obj", instances);
         mesh.setBoundingRadius(1);
-        Texture texture = new Texture("/textures/terrain_textures.png", 2, 1);
+        Texture texture = new Texture("/textures/images/101.png", 16, 22);
         Material material = new Material(texture, reflectance);
         mesh.setMaterial(material);
-        gameItems = new GameItem[instances+1];
+        gameItems = new GameItem[instances];
+        Random r = new Random(System.currentTimeMillis());
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
                 GameItem gameItem = new GameItem(mesh);
                 gameItem.setScale(blockScale);
                 int rgb = HeightMapMesh.getRGB(i, j, width, buf);
                 incy = rgb / (10 * 255 * 255);
-                gameItem.setPosition(posx, starty+incy , posz);
-                int textPos = Math.random() > 0.5f ? 0 : 1;
+                
+                gameItem.setPosition(posx, starty+(incy*mesh.getBoundingRadius()*2) , posz);
+                int textPos = Math.random() > 0.5f ? 2 : 7;
                 gameItem.setTextPos(textPos);
                 gameItems[i * width + j] = gameItem;
 
@@ -158,25 +165,20 @@ public class DummyGame implements IGameLogic {
             posx = startx;
             posz -= inc;
         }
-        
-        Mesh[] terrainMesh = StaticMeshesLoader.load("src/main/resources/models/terrain/terrain.obj", "src/main/resources/models/terrain");
-        GameItem terrain = new GameItem(terrainMesh);
-        terrain.setScale(100.0f);
+        scene.setGameItems(gameItems);
+       
         Mesh[] playerMesh = StaticMeshesLoader.load("src/main/resources/models/game/Wizard.obj", "src/main/resources/models/game");
         
         player = new Player(playerMesh);
         player.setScale(0.2f);
-        player.setPosition(0, -2, 1);
-        //player.setSelected(true);
+        player.setPosition(0, 2, 10);
         
-        animItem = AnimMeshesLoader.loadAnimGameItem("src/main/resources/models/bob/boblamp.md5mesh", "");
-        animItem.setScale(0.05f);
-        animation = animItem.getCurrentAnimation();
+        
+        scene.setGameItems(new GameItem[]{player});
+        
+        camera = new Camera(player);
+        
      
-        //scene.setGameItems(new GameItem[]{player, terrain});
-        gameItems[gameItems.length-1]=player;
-       scene.setGameItems(gameItems);
-        
         // Shadows
         scene.setRenderShadows(true);
         
@@ -193,12 +195,7 @@ public class DummyGame implements IGameLogic {
         // Setup Lights
         setupLights();
 
-        camera.getPosition().x = 0f;
-        camera.getPosition().y = 3f;
-        camera.getPosition().z = 15f;
-        camera.getRotation().x = 15f;
-        camera.getRotation().y = 0f;
-        camera.getRotation().z=-45f;
+
     }
 
     private void setupLights() {
@@ -220,7 +217,7 @@ public class DummyGame implements IGameLogic {
     public void input(Window window, MouseInput mouseInput) {
         sceneChanged = false;
         cameraInc.set(0, 0, 0);
-        playerInc.set(0, 0, 0, 0);
+        playerInc.set(0, 0, 0);
         
         if (window.isKeyPressed(GLFW_KEY_W)) {
             sceneChanged = true;
@@ -250,10 +247,10 @@ public class DummyGame implements IGameLogic {
         }
         if (window.isKeyPressed(GLFW_KEY_Q)) {	
             sceneChanged = true;
-            playerInc.w = 1;
+            //playerInc.w = 1;
         } else if (window.isKeyPressed(GLFW_KEY_E)) {
             sceneChanged = true;
-            playerInc.w = -1;
+            //playerInc.w = -1;
         }
         if (window.isKeyPressed(GLFW_KEY_Z)) {
         	
@@ -282,24 +279,33 @@ public class DummyGame implements IGameLogic {
 
     @Override
     public void update(float interval, MouseInput mouseInput, Window window) {
+    	Vector2f rotVec = null;
         if (mouseInput.isRightButtonPressed()) {
             // Update camera based on mouse            
-            Vector2f rotVec = mouseInput.getDisplVec();
+            rotVec = mouseInput.getDisplVec();
             
             //camera.moveRotation(rotVec.x * MOUSE_SENSITIVITY, rotVec.y * MOUSE_SENSITIVITY, 0);
-            player.movePosition(rotVec.y * MOUSE_SENSITIVITY/4f ,0f,  rotVec.x * MOUSE_SENSITIVITY/4f);
+            //player.movePosition(rotVec.y * MOUSE_SENSITIVITY/4f ,0f,  rotVec.x * MOUSE_SENSITIVITY/4f);
             sceneChanged = true;
         }
-        player.moveRotation(0f, playerInc.w/4f, 0f);
-        player.getRotation().normalize();
+        GameItem currentBlock = this.itemSelector.selectGameItemMove(gameItems, player.getPosition(), new Vector3f(playerInc.x,-1f,playerInc.z));
+        if(currentBlock.getPosition().y+1f>player.getPosition().y) {
+        	player.getPosition().y=currentBlock.getPosition().y+1f;
+        }
+        if(currentBlock.getPosition().y+1f<player.getPosition().y) {
+        	player.getPosition().y=currentBlock.getPosition().y+1f;
+        }
+        
         Vector3f ploc =  player.getPosition();
         //player.getRotation().y=playerInc.y* CAMERA_POS_STEP;
-        player.movePosition(playerInc.x * CAMERA_POS_STEP, playerInc.y * CAMERA_POS_STEP, playerInc.z * CAMERA_POS_STEP);
        
+        
+        
         //camera.moveRotation(-cameraInc.x* CAMERA_POS_STEP/4f, -cameraInc.y* CAMERA_POS_STEP/4f, 0f);
-        camera.movePosition(cameraInc.x* CAMERA_POS_STEP, cameraInc.y* CAMERA_POS_STEP, cameraInc.z* CAMERA_POS_STEP);
+        //camera.movePosition(cameraInc.x* CAMERA_POS_STEP, cameraInc.y* CAMERA_POS_STEP, cameraInc.z* CAMERA_POS_STEP);
         
         //camera.getRotation().y=playerInc.y* CAMERA_POS_STEP;;
+        //player.setSelected(true);
         lightAngle += angleInc;
         if (lightAngle < 0) {
             lightAngle = 0;
@@ -313,27 +319,47 @@ public class DummyGame implements IGameLogic {
         lightDirection.y = yValue;
         lightDirection.z = zValue;
         lightDirection.normalize();
-
-        //Transformation.updateGenericViewMatrix(player.getPosition(), player.g, matrix)
+        //input.init(window);
+        camera.move(input);
+        camera.setRotation(camera.getRoll(),camera.getYaw(),camera.getPitch());
+        camera.setPosition(camera.getPosition().x, camera.getPosition().y, camera.getPosition().z);
+       
+        
+        
+        player.setRotation(player.getRotation().setFromUnnormalized(camera.getViewMatrix().invert()));
+        Transformation trans = new Transformation();
+        Matrix4f newRot = trans.buildModelMatrix(player);
+        
+        player.getPosition().add(playerInc.mulDirection(newRot));
+        //player.setPosition(player.getPosition().x+playerInc.x * CAMERA_POS_STEP, player.getPosition().y+playerInc.y * CAMERA_POS_STEP, player.getPosition().z+playerInc.z * CAMERA_POS_STEP);
         camera.updateViewMatrix();
         
-        boolean aux = mouseInput.isLeftButtonPressed();
+        
+        
+        boolean aux = false;
         if (aux && !this.leftButtonPressed && this.selectDetector.selectGameItem(gameItems, window, mouseInput.getCurrentPos(), camera)) {
             this.hud.incCounter();
             GameItem go = this.selectDetector.selectMovementTile(gameItems, window, mouseInput.getCurrentPos(), camera);
             Thread t = new Thread(() -> {
-            	float interp = 0.0f;
+            	
                while(true) {
-            	   float angle = player.getPosition().angle(go.getPosition());
-            	   //player.getRotation().y=angle*2;
-            	   
-            	   Vector3f newPos =player.getPosition().lerp(go.getPosition(),1.0f);
-            	   player.setPosition(newPos.x, newPos.y+0.5f, newPos.z);
+            	  
+            	   Vector3f newPos = new Vector3f();
+            	   player.getPosition().lerp(go.getPosition(),0.001f, newPos);
+//            	   Vector3f dif = newPos.sub(player.getPosition());
+//            	   dif.normalize(CAMERA_POS_STEP);
+            	   System.out.println(go.getPosition().toString());
+            	   player.setPosition(newPos.x, newPos.y, newPos.z);
+            	   //camera.movePosition(dif.x, dif.y, dif.z);
                	   //player.getPosition().z=-go.getPosition().z+0.5f;
-               	 
-               	   if(player.getPosition().distance(go.getPosition())<=1.0f)
-               		 sceneChanged=true;
-               		   break;
+            	   sceneChanged=true;
+               	   if(player.getPosition().distance(go.getPosition())<=0.1f) {
+               		   player.movePosition(0, 0.4f, 0);
+               		   System.out.println(player.getPosition().distance(go.getPosition()));
+               		   sceneChanged=true;
+            		   break;
+               	   }
+               		
                }
             });
             t.start();

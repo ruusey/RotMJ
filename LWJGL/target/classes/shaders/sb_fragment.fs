@@ -21,7 +21,7 @@ void main()
 {
 	vec2 textCoord = getTextCoord();
 	float depth = texture2D(depthsText, textCoord).r;
-	
+	// Only draw skybox where there's have not been drawn anything before
 	if ( depth == 1 )
 	{
         if ( hasTexture == 1 )

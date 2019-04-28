@@ -72,7 +72,7 @@ public class Texture {
             glBindTexture(GL_TEXTURE_2D, this.id);
 
             // Tell OpenGL how to unpack the RGBA bytes. Each component is 1 byte size
-            glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+            glPixelStorei(GL_UNPACK_ALIGNMENT, 2);
 
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
