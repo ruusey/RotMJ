@@ -77,4 +77,5 @@ public class MouseBoxSelectionDetector extends CameraBoxSelectionDetector {
 
         return selectGameItemMove(gameItems, camera.getPosition(), mouseDir);
     }
+    
 }

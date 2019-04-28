@@ -166,7 +166,7 @@ public class DummyGame implements IGameLogic {
         
         player = new Player(playerMesh);
         player.setScale(0.2f);
-        player.setPosition(0, 0, 10);
+        player.setPosition(0, -2, 1);
         //player.setSelected(true);
         
         animItem = AnimMeshesLoader.loadAnimGameItem("src/main/resources/models/bob/boblamp.md5mesh", "");
@@ -225,16 +225,20 @@ public class DummyGame implements IGameLogic {
         if (window.isKeyPressed(GLFW_KEY_W)) {
             sceneChanged = true;
             playerInc.z = -1;
+            cameraInc.z=-1;
         } else if (window.isKeyPressed(GLFW_KEY_S)) {
             sceneChanged = true;
             playerInc.z = 1;
+            cameraInc.z=1;
         }
         if (window.isKeyPressed(GLFW_KEY_A)) {
             sceneChanged = true;
             playerInc.x = -1;
+            cameraInc.x=-1;
         } else if (window.isKeyPressed(GLFW_KEY_D)) {
             sceneChanged = true;
             playerInc.x = 1;
+            cameraInc.x=1;
         }
         if (window.isKeyPressed(GLFW_KEY_Z)) {
         	
@@ -254,10 +258,10 @@ public class DummyGame implements IGameLogic {
         if (window.isKeyPressed(GLFW_KEY_Z)) {
         	
             sceneChanged = true;
-            cameraInc.y = -1;
+            cameraInc.z = -1;
         } else if (window.isKeyPressed(GLFW_KEY_X)) {
             sceneChanged = true;
-            cameraInc.y = 1;
+            cameraInc.z = 1;
         }
         if (window.isKeyPressed(GLFW_KEY_LEFT)) {
             sceneChanged = true;
@@ -286,13 +290,14 @@ public class DummyGame implements IGameLogic {
             player.movePosition(rotVec.y * MOUSE_SENSITIVITY/4f ,0f,  rotVec.x * MOUSE_SENSITIVITY/4f);
             sceneChanged = true;
         }
-        player.moveRotation(0f, playerInc.w* CAMERA_POS_STEP/4f, 0f);
+        player.moveRotation(0f, playerInc.w/4f, 0f);
+        player.getRotation().normalize();
         Vector3f ploc =  player.getPosition();
         //player.getRotation().y=playerInc.y* CAMERA_POS_STEP;
         player.movePosition(playerInc.x * CAMERA_POS_STEP, playerInc.y * CAMERA_POS_STEP, playerInc.z * CAMERA_POS_STEP);
        
-        camera.moveRotation(0f, -cameraInc.y* CAMERA_POS_STEP/4f, 0f);
-        camera.movePosition(-cameraInc.y* CAMERA_POS_STEP, 0f, -cameraInc.y* CAMERA_POS_STEP);
+        //camera.moveRotation(-cameraInc.x* CAMERA_POS_STEP/4f, -cameraInc.y* CAMERA_POS_STEP/4f, 0f);
+        camera.movePosition(cameraInc.x* CAMERA_POS_STEP, cameraInc.y* CAMERA_POS_STEP, cameraInc.z* CAMERA_POS_STEP);
         
         //camera.getRotation().y=playerInc.y* CAMERA_POS_STEP;;
         lightAngle += angleInc;
@@ -320,16 +325,18 @@ public class DummyGame implements IGameLogic {
             	float interp = 0.0f;
                while(true) {
             	   float angle = player.getPosition().angle(go.getPosition());
-            	   player.getRotation().y=angle*2;
+            	   //player.getRotation().y=angle*2;
             	   
-            	   player.getPosition().lerp(go.getPosition(),1.0f);
-               	   player.getPosition().y=-0.5f;
-               	  
+            	   Vector3f newPos =player.getPosition().lerp(go.getPosition(),1.0f);
+            	   player.setPosition(newPos.x, newPos.y+0.5f, newPos.z);
+               	   //player.getPosition().z=-go.getPosition().z+0.5f;
+               	 
                	   if(player.getPosition().distance(go.getPosition())<=1.0f)
+               		 sceneChanged=true;
                		   break;
                }
             });
-            t.run();
+            t.start();
             
             
         }
