@@ -97,14 +97,14 @@ public class XMLParse {
 
 		com.engine.graph.Texture tex = null;
 		try {
-			tex = new com.engine.graph.Texture(file, x, y);
+			//tex = new com.engine.graph.Texture(file, x, y);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		WeaponObject w = new WeaponObject(name, id, tex, true,true,rof, namePro, speed,
 				min, max, numProjectiles, range, multiHit,angleBetween);
-		System.out.println(gen.serialize(w));
+		//System.out.println(gen.serialize(w));
 		weapons.put(name,w);
 
 	}
@@ -122,13 +122,13 @@ public class XMLParse {
 		
 		com.engine.graph.Texture tex = null;
 		try {
-			tex = new com.engine.graph.Texture(file, x, y);
+			//tex = new com.engine.graph.Texture(file, x, y);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		ProjectileObject pr = new ProjectileObject(name,id,tex,corrAngle, size);
-		System.out.println(gen.serialize(pr));
+		//System.out.println(gen.serialize(pr));
 		projectiles.put(name, pr);
 
 	}
@@ -143,7 +143,7 @@ public class XMLParse {
 		boolean loot = (node.getChildText("Loot")) != null;
 		com.engine.graph.Texture tex = null;
 		try {
-			tex = new com.engine.graph.Texture(file, x, y);
+			//tex = new com.engine.graph.Texture(file, x, y);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -162,7 +162,7 @@ public class XMLParse {
 		boolean moveable = (node.getChildText("Static")) != null;
 		com.engine.graph.Texture tex = null;
 		try {
-			tex = new com.engine.graph.Texture(file, x, y);
+			//tex = new com.engine.graph.Texture(file, x, y);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -185,14 +185,14 @@ public class XMLParse {
 				int yTop = Integer.parseInt(texTop.getChildText("Y"));
 				com.engine.graph.Texture top = null;
 				try {
-					top = new com.engine.graph.Texture(fileTop,xTop,yTop);
+					//top = new com.engine.graph.Texture(fileTop,xTop,yTop);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 		com.engine.graph.Texture tex = null;
 		try {
-			tex = new com.engine.graph.Texture(file, x, y);
+			//tex = new com.engine.graph.Texture(file, x, y);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -209,7 +209,7 @@ public class XMLParse {
 		int y = Integer.parseInt(textureMap.getChildText("Y"));
 		com.engine.graph.Texture tex = null;
 		try {
-			tex = new com.engine.graph.Texture(file, x, y);
+			//tex = new com.engine.graph.Texture(file, x, y);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -255,7 +255,7 @@ public class XMLParse {
 				maxDef, def, maxSpeed, spd, maxDex, dex,
 				maxVit, vit);
 		Genson gen = new Genson();
-		System.out.println(gen.serialize(p));
+		//System.out.println(gen.serialize(p));
 		players.put(name, p);
 	}
 	public static void parseEnemy(Element node){
@@ -267,7 +267,7 @@ public class XMLParse {
 		int y = Integer.parseInt(textureMap.getChildText("Y"));
 		com.engine.graph.Texture tex = null;
 		try {
-			tex = new com.engine.graph.Texture(file, x, y);
+			//tex = new com.engine.graph.Texture(file, x, y);
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -302,7 +302,7 @@ public class XMLParse {
 		
 		EnemyObject e = new EnemyObject(name,id,tex,true,true,maxHp,def,size,patterns);
 		Genson gen = new Genson();
-		System.out.println(gen.serialize(e));
+		//System.out.println(gen.serialize(e));
 		enemies.put(name, e);
 	}
 	

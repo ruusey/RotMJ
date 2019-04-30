@@ -16,7 +16,7 @@ public class FlowParticleEmitter implements IParticleEmitter {
 
   private final List<GameItem> particles;
 
-  private final Particle baseParticle;
+  private Particle baseParticle;
 
   private long creationPeriodMillis;
 
@@ -43,7 +43,9 @@ public class FlowParticleEmitter implements IParticleEmitter {
   public Particle getBaseParticle() {
       return baseParticle;
   }
-
+  public void setBaseParticle(Particle particle) {
+	  this.baseParticle=particle;
+  }
   public long getCreationPeriodMillis() {
       return creationPeriodMillis;
   }
