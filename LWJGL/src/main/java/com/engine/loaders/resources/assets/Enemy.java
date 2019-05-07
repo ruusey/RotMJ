@@ -33,8 +33,8 @@ public class Enemy extends Entity implements Lootable{
 			e.printStackTrace();
 		}
 		Lootbag loot = new Lootbag("test",1,lootTexture,true,true,null);
-		loot.contents[0]=Client.loader.weapons.get("Coral Bow");
-		Client.loot.add(loot);
+//		loot.contents[0]=Client.loader.weapons.get("Coral Bow");
+//		Client.loot.add(loot);
 		
 	}
 

@@ -1,5 +1,36 @@
 Manifest-Version: 1.0
 Built-By: ruusey
+Class-Path: genson-1.3.jar pngdecoder-1.0.jar jdom2-2.0.6.jar joml-1.9
+ .14.jar lwjgl-3.2.1.jar lwjgl-assimp-3.2.1.jar lwjgl-bgfx-3.2.1.jar l
+ wjgl-cuda-3.2.1.jar lwjgl-egl-3.2.1.jar lwjgl-glfw-3.2.1.jar lwjgl-ja
+ wt-3.2.1.jar lwjgl-jemalloc-3.2.1.jar lwjgl-libdivide-3.2.1.jar lwjgl
+ -llvm-3.2.1.jar lwjgl-lmdb-3.2.1.jar lwjgl-lz4-3.2.1.jar lwjgl-meow-3
+ .2.1.jar lwjgl-nanovg-3.2.1.jar lwjgl-nfd-3.2.1.jar lwjgl-nuklear-3.2
+ .1.jar lwjgl-odbc-3.2.1.jar lwjgl-openal-3.2.1.jar lwjgl-opencl-3.2.1
+ .jar lwjgl-opengl-3.2.1.jar lwjgl-opengles-3.2.1.jar lwjgl-openvr-3.2
+ .1.jar lwjgl-opus-3.2.1.jar lwjgl-ovr-3.2.1.jar lwjgl-par-3.2.1.jar l
+ wjgl-remotery-3.2.1.jar lwjgl-rpmalloc-3.2.1.jar lwjgl-sse-3.2.1.jar 
+ lwjgl-stb-3.2.1.jar lwjgl-tinyexr-3.2.1.jar lwjgl-tinyfd-3.2.1.jar lw
+ jgl-tootle-3.2.1.jar lwjgl-vma-3.2.1.jar lwjgl-vulkan-3.2.1.jar lwjgl
+ -xxhash-3.2.1.jar lwjgl-yoga-3.2.1.jar lwjgl-zstd-3.2.1.jar lwjgl-3.2
+ .1-natives-windows.jar lwjgl-assimp-3.2.1-natives-windows.jar lwjgl-b
+ gfx-3.2.1-natives-windows.jar lwjgl-glfw-3.2.1-natives-windows.jar lw
+ jgl-jemalloc-3.2.1-natives-windows.jar lwjgl-libdivide-3.2.1-natives-
+ windows.jar lwjgl-llvm-3.2.1-natives-windows.jar lwjgl-lmdb-3.2.1-nat
+ ives-windows.jar lwjgl-lz4-3.2.1-natives-windows.jar lwjgl-meow-3.2.1
+ -natives-windows.jar lwjgl-nanovg-3.2.1-natives-windows.jar lwjgl-nfd
+ -3.2.1-natives-windows.jar lwjgl-nuklear-3.2.1-natives-windows.jar lw
+ jgl-openal-3.2.1-natives-windows.jar lwjgl-opengl-3.2.1-natives-windo
+ ws.jar lwjgl-opengles-3.2.1-natives-windows.jar lwjgl-openvr-3.2.1-na
+ tives-windows.jar lwjgl-opus-3.2.1-natives-windows.jar lwjgl-ovr-3.2.
+ 1-natives-windows.jar lwjgl-par-3.2.1-natives-windows.jar lwjgl-remot
+ ery-3.2.1-natives-windows.jar lwjgl-rpmalloc-3.2.1-natives-windows.ja
+ r lwjgl-sse-3.2.1-natives-windows.jar lwjgl-stb-3.2.1-natives-windows
+ .jar lwjgl-tinyexr-3.2.1-natives-windows.jar lwjgl-tinyfd-3.2.1-nativ
+ es-windows.jar lwjgl-tootle-3.2.1-natives-windows.jar lwjgl-vma-3.2.1
+ -natives-windows.jar lwjgl-xxhash-3.2.1-natives-windows.jar lwjgl-yog
+ a-3.2.1-natives-windows.jar lwjgl-zstd-3.2.1-natives-windows.jar
 Build-Jdk: 1.8.0_201
 Created-By: Maven Integration for Eclipse
+Main-Class: com.game.Main
 

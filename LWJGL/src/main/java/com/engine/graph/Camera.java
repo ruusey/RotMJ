@@ -9,10 +9,10 @@ import com.engine.graph.world.Player;
 import com.util.Input;
 
 public class Camera {
-	private float distanceFromPlayer = 20;
+	private float distanceFromPlayer = 30;
 	private float angleAroundPlayer = 0;
 
-	private float pitch = 30;
+	private float pitch = 15;
 	private float yaw;
 	private float roll;
 	private final Vector3f position;

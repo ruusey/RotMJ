@@ -105,8 +105,8 @@ public class DummyGame implements IGameLogic {
 
 	@Override
 	public void init(Window window) throws Exception {
-		parser = new XMLParse("src/main/resources/xml/items.xml");
-		spriteLoader = new SpriteLoader(64, 64, 5, 10, "src/main/resources/textures/images");
+		//parser = new XMLParse("src/main/resources/xml/items.xml");
+		//spriteLoader = new SpriteLoader(64, 64, 5, 10, "src/main/resources/textures/images");
 
 		hud.init(window);
 		input.init(window);
@@ -367,17 +367,18 @@ public class DummyGame implements IGameLogic {
 				Matrix4f newRot = trans.buildModelMatrix(player);
 				player.getPosition().sub(playerInc);
 			} else {
-				camera.move(input);
-				camera.setRotation(camera.getRoll(), camera.getYaw(), camera.getPitch());
-				camera.setPosition(camera.getPosition().x, camera.getPosition().y, camera.getPosition().z);
-
-				player.setRotation(player.getRotation().setFromUnnormalized(camera.getViewMatrix().invert()));
-				Transformation trans = new Transformation();
-				Matrix4f newRot = trans.buildModelMatrix(player);
-
-				player.getPosition().add(playerInc.mulDirection(newRot));
+				
 			}
 		}
+		camera.move(input);
+		camera.setRotation(camera.getRoll(), camera.getYaw(), camera.getPitch());
+		camera.setPosition(camera.getPosition().x, camera.getPosition().y, camera.getPosition().z);
+
+		player.setRotation(player.getRotation().setFromUnnormalized(camera.getViewMatrix().invert()));
+		Transformation trans = new Transformation();
+		Matrix4f newRot = trans.buildModelMatrix(player);
+
+		player.getPosition().add(playerInc.mulDirection(newRot));
 		
 
 		// player.setPosition(player.getPosition().x+playerInc.x * CAMERA_POS_STEP,
