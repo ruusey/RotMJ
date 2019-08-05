@@ -59,7 +59,7 @@ public class CameraBoxSelectionDetector {
             gameItem.setSelected(false);
             min.set(gameItem.getPosition());
             max.set(gameItem.getPosition());
-            min.add(-gameItem.getScale(), -gameItem.getScale(), -gameItem.getScale());
+            min.add(-gameItem.getMesh().getBoundingRadius(), -gameItem.getMesh().getBoundingRadius(), -gameItem.getMesh().getBoundingRadius());
             max.add(gameItem.getScale(), gameItem.getScale(), gameItem.getScale());
             if (Intersectionf.intersectRayAab(center, dir, min, max, nearFar) && nearFar.x < closestDistance) {
                 closestDistance = nearFar.x;

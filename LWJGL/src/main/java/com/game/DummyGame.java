@@ -211,8 +211,8 @@ public class DummyGame implements IGameLogic {
 
 		player = new Player(playerMesh);
 		player.setScale(0.4f);
-		player.setPosition(0, 6, -10);
-
+		player.setPosition(0, 6, 10);
+		player.setRotation(new Quaternionf(180,180,180,0));
 		scene.setGameItems(new GameItem[] { player });
 
 		camera = new Camera(player);
@@ -328,11 +328,13 @@ public class DummyGame implements IGameLogic {
 			// MOUSE_SENSITIVITY/4f);
 			sceneChanged = true;
 		}
-		GameItem currentBlock = this.itemSelector.selectGameItemMove(gameItems, player.getPosition(),
-						new Vector3f(playerInc.x, 0.0F, playerInc.z));
+		Vector3f pos = new Vector3f(player.getPosition());
+		
+		GameItem currentBlock = this.itemSelector.selectGameItemMove(gameItems, pos,
+						new Vector3f(0f, 0, 0f));
 
 		Vector3f ploc = player.getPosition();
-		// player.getRotation().y=playerInc.y* CAMERA_POS_STEP;
+		//player.getRotation().y=playerInc.y* CAMERA_POS_STEP;
 
 		// camera.moveRotation(-cameraInc.x* CAMERA_POS_STEP/4f, -cameraInc.y*
 		// CAMERA_POS_STEP/4f, 0f);
@@ -357,21 +359,21 @@ public class DummyGame implements IGameLogic {
 		if(currentBlock!=null) {
 			Box2D bb = getBoundingBox(currentBlock);
 			Box2D pBox = getBoundingBox(player);
-			if (bb.contains(player.getPosition().x, player.getPosition().z) || pBox.contains(bb.x,bb.y)) {
+			//if (bb.contains(player.getPosition().x, player.getPosition().z) || pBox.contains(bb.x,bb.y)) {
 				camera.move(input);
 				camera.setRotation(camera.getRoll(), camera.getYaw(), camera.getPitch());
 				camera.setPosition(camera.getPosition().x, camera.getPosition().y, camera.getPosition().z);
 
-				player.setRotation(player.getRotation().setFromUnnormalized(camera.getViewMatrix().invert()));
+				//player.setRotation(player.getRotation().setFromUnnormalized(camera.getViewMatrix().invert()));
 				Transformation trans = new Transformation();
 				Matrix4f newRot = trans.buildModelMatrix(player);
 				player.getPosition().sub(playerInc);
-			} else {
+			//} else {
 				
-			}
+			//}
 		}
 		camera.move(input);
-		camera.setRotation(camera.getRoll(), camera.getYaw(), camera.getPitch());
+		camera.setRotation(-camera.getRoll(), camera.getYaw(), camera.getPitch());
 		camera.setPosition(camera.getPosition().x, camera.getPosition().y, camera.getPosition().z);
 
 		player.setRotation(player.getRotation().setFromUnnormalized(camera.getViewMatrix().invert()));

@@ -10,7 +10,7 @@ import com.util.Input;
 
 public class Camera {
 	private float distanceFromPlayer = 30;
-	private float angleAroundPlayer = 0;
+	private float angleAroundPlayer = 180;
 
 	private float pitch = 15;
 	private float yaw;
